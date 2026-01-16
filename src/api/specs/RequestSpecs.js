@@ -1,19 +1,13 @@
+import 'dotenv/config';
+
 class RequestSpecs {
-  static getDefaultHeaders() {
+  static petStoreSpec() {
     return {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    };
-  }
-
-  static getTimeout() {
-    return 30000;
-  }
-
-  static getRetryConfig() {
-    return {
-      retries: 3,
-      retryDelay: 1000,
+      baseURL: process.env.API_BASE_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
     };
   }
 }

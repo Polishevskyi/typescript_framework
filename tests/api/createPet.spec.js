@@ -1,17 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../src/api/fixtures/apiFixtures.js';
 import { PetSteps } from '../../src/api/steps/petSteps.js';
 import { HTTP_STATUS } from '../../src/api/specs/ResponseSpecs.js';
-import CreatePetResponse from '../../src/api/models/CreatePetResponse.js';
 import { assertThatModels } from '../../src/api/models/comparison/modelAssertions.js';
+import PetRequestModel from '../../src/api/models/PetRequestModel.js';
 
 test.describe('CREATE Pet Test', () => {
-  test('should create a pet and validate status code and model', async ({ request }) => {
+  test('Verify that pet can be created successfully with valid data', async ({ request, softly }) => {
     const petSteps = new PetSteps(request);
     const { requestData, responseData, status } = await petSteps.createPet();
 
     expect(status).toBe(HTTP_STATUS.OK);
 
-    const expectedResponse = new CreatePetResponse(requestData);
-    await assertThatModels(expectedResponse, responseData).match();
+    softly.assertThat(responseData).isNotNull();
+    softly.assertThat(responseData?.id).isNotNull();
+
+    const requestModel = new PetRequestModel(requestData);
+    await assertThatModels(requestModel, responseData).match();
   });
 });

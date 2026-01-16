@@ -1,17 +1,19 @@
-class RequestInterface {
-  async get(url, config) {
-    throw new Error('get method must be implemented');
-  }
+import BaseModel from '../models/BaseModel.js';
 
-  async post(url, data, config) {
+class RequestInterface {
+  async post(model) {
     throw new Error('post method must be implemented');
   }
 
-  async put(url, data, config) {
+  async get(id) {
+    throw new Error('get method must be implemented');
+  }
+
+  async put(model) {
     throw new Error('put method must be implemented');
   }
 
-  async delete(url, config) {
+  async delete(id) {
     throw new Error('delete method must be implemented');
   }
 }

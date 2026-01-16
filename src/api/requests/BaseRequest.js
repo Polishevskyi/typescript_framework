@@ -1,13 +1,14 @@
 import 'dotenv/config';
-import { HEADERS } from '../../utils/constants.js';
 
 class BaseRequest {
-  constructor(requestContext) {
+  constructor(requestContext, endpoint = null, responseSpecification = null) {
     this.requestContext = requestContext;
+    this.endpoint = endpoint;
+    this.responseSpecification = responseSpecification;
     this.baseURL = process.env.API_BASE_URL;
     this.defaultHeaders = {
-      'Content-Type': HEADERS.CONTENT_TYPE,
-      Accept: HEADERS.ACCEPT,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     };
   }
 

@@ -1,54 +1,65 @@
 import BaseRequest from '../BaseRequest.js';
-import { endpoints } from '../Endpoint.js';
+import RequestInterface from '../RequestInterface.js';
+import BaseModel from '../../models/BaseModel.js';
 
-class CrudRequester {
-  constructor(requestContext) {
-    this.httpClient = new BaseRequest(requestContext);
+class CrudRequester extends BaseRequest {
+  constructor(requestContext, endpoint, responseSpecification) {
+    super(requestContext, endpoint, responseSpecification);
   }
 
-  async request(endpointKey, { data = null, config = {}, pathParams = {} } = {}) {
-    const endpoint = endpoints[endpointKey];
+  async post(model) {
+    const body = model || {};
+    const url = this.endpoint.getUrl();
+    const response = await this.requestContext.post(`${this.baseURL}${url}`, {
+      headers: this.defaultHeaders,
+      data: body instanceof BaseModel ? body.toJson() : body,
+    });
 
-    if (!endpoint) {
-      throw new Error(`Endpoint "${endpointKey}" not found`);
+    if (this.responseSpecification) {
+      this.responseSpecification.validate(response);
     }
 
-    const { url: endpointUrl, method = 'post', responseModel } = endpoint;
-    let url = endpointUrl;
-
-    if (typeof url === 'function') {
-      url = url(...Object.values(pathParams));
-    }
-
-    const requestData = data?.toJson ? data.toJson() : data;
-    const httpMethod = method.toLowerCase();
-
-    let response;
-
-    if (httpMethod === 'get') {
-      response = await this.httpClient.get(url, { params: requestData, ...config });
-    } else if (httpMethod === 'delete') {
-      response = await this.httpClient.delete(url, config);
-    } else if (httpMethod === 'post' || httpMethod === 'put') {
-      response = await this.httpClient[httpMethod](url, requestData, config);
-    } else {
-      response = await this.httpClient[httpMethod](url, requestData, config);
-    }
-
-    const responseData = responseModel ? this.instantiateModel(responseModel, response.data) : response.data;
-
-    return {
-      data: responseData,
-      status: response.status,
-      headers: response.headers,
-    };
+    return response;
   }
 
-  instantiateModel(ModelClass, data) {
-    if (typeof ModelClass.fromJson === 'function') {
-      return ModelClass.fromJson(data);
+  async get(id) {
+    const url = this.endpoint.getUrl({ petId: id });
+    const response = await this.requestContext.get(`${this.baseURL}${url}`, {
+      headers: this.defaultHeaders,
+    });
+
+    if (this.responseSpecification) {
+      this.responseSpecification.validate(response);
     }
-    return new ModelClass(data);
+
+    return response;
+  }
+
+  async put(model) {
+    const url = this.endpoint.getUrl();
+    const response = await this.requestContext.put(`${this.baseURL}${url}`, {
+      headers: this.defaultHeaders,
+      data: model instanceof BaseModel ? model.toJson() : model,
+    });
+
+    if (this.responseSpecification) {
+      this.responseSpecification.validate(response);
+    }
+
+    return response;
+  }
+
+  async delete(id) {
+    const url = this.endpoint.getUrl({ petId: id });
+    const response = await this.requestContext.delete(`${this.baseURL}${url}`, {
+      headers: this.defaultHeaders,
+    });
+
+    if (this.responseSpecification) {
+      this.responseSpecification.validate(response);
+    }
+
+    return response;
   }
 }
 

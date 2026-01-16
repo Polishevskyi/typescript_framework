@@ -1,21 +1,25 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../src/api/fixtures/apiFixtures.js';
 import { PetSteps } from '../../src/api/steps/petSteps.js';
 import { HTTP_STATUS } from '../../src/api/specs/ResponseSpecs.js';
-import CreatePetResponse from '../../src/api/models/CreatePetResponse.js';
 import { assertThatModels } from '../../src/api/models/comparison/modelAssertions.js';
 import { generatePetUpdate } from '../../src/utils/dataGenerator.js';
+import PetRequestModel from '../../src/api/models/PetRequestModel.js';
 
 test.describe('UPDATE Pet Test', () => {
-  test('should update a pet and validate status code and model', async ({ request }) => {
+  test('Verify that pet can be updated successfully with new data', async ({ request, softly }) => {
     const petSteps = new PetSteps(request);
-    const { responseData: createdPet } = await petSteps.createPet();
+    const createdPet = await petSteps.createPet();
 
-    const updatedData = generatePetUpdate(createdPet);
-    const { requestData, responseData, status } = await petSteps.updatePet(updatedData);
+    const updatedPetData = generatePetUpdate(createdPet.responseData);
+    const updatedPet = await petSteps.updatePet(updatedPetData);
 
-    expect(status).toBe(HTTP_STATUS.OK);
+    expect(updatedPet.status).toBe(HTTP_STATUS.OK);
 
-    const expectedResponse = new CreatePetResponse(requestData);
-    await assertThatModels(expectedResponse, responseData).match();
+    softly.assertThat(updatedPet.responseData).isNotNull();
+    softly.assertThat(updatedPet.responseData?.id).isNotNullAndEqualTo(createdPet.responseData.id);
+    softly.assertThat(updatedPet.responseData?.name).isNotNullAndEqualTo(updatedPetData.name);
+
+    const updatedPetModel = new PetRequestModel(updatedPetData);
+    await assertThatModels(updatedPetModel, updatedPet.responseData).match();
   });
 });

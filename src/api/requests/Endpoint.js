@@ -1,24 +1,26 @@
-import CreatePetRequest from '../models/CreatePetRequest.js';
-import CreatePetResponse from '../models/CreatePetResponse.js';
-import { ENDPOINTS_KEY } from '../../utils/constants.js';
+import BaseModel from '../models/BaseModel.js';
+import PetRequestModel from '../models/PetRequestModel.js';
+import PetResponseModel from '../models/PetResponseModel.js';
 
-const endpoints = {
-  [ENDPOINTS_KEY.CREATE_PET]: {
-    url: '/pet',
-    method: 'post',
-    requestModel: CreatePetRequest,
-    responseModel: CreatePetResponse,
-  },
-  [ENDPOINTS_KEY.UPDATE_PET]: {
-    url: '/pet',
-    method: 'put',
-    requestModel: CreatePetRequest,
-    responseModel: CreatePetResponse,
-  },
-  [ENDPOINTS_KEY.DELETE_PET]: {
-    url: (petId) => `/pet/${petId}`,
-    method: 'delete',
-  },
-};
+class Endpoint {
+  constructor(url, requestModel, responseModel) {
+    this.url = url;
+    this.requestModel = requestModel;
+    this.responseModel = responseModel;
+  }
 
-export { endpoints };
+  getUrl(pathParams = {}) {
+    let url = this.url;
+    Object.entries(pathParams).forEach(([key, value]) => {
+      url = url.replace(`{${key}}`, String(value));
+    });
+    return url;
+  }
+}
+
+export const CREATE_PET = new Endpoint('/pet', PetRequestModel, PetResponseModel);
+export const GET_PET = new Endpoint('/pet/{petId}', BaseModel, PetResponseModel);
+export const UPDATE_PET = new Endpoint('/pet', PetRequestModel, PetResponseModel);
+export const DELETE_PET = new Endpoint('/pet/{petId}', BaseModel, PetResponseModel);
+
+export { Endpoint };

@@ -1,12 +1,11 @@
 import { faker } from '@faker-js/faker';
-import { PET_STATUS, PET_CATEGORIES } from './constants.js';
 
 // API data generators
 const generatePet = () => ({
   id: faker.number.int({ min: 1, max: 100000 }),
   category: {
     id: faker.number.int({ min: 1, max: 100 }),
-    name: faker.helpers.arrayElement(PET_CATEGORIES),
+    name: faker.helpers.arrayElement(['Dogs', 'Cats', 'Birds', 'Fish', 'Reptiles']),
   },
   name: faker.person.firstName(),
   photoUrls: [faker.image.urlLoremFlickr({ category: 'animals' })],
@@ -16,13 +15,16 @@ const generatePet = () => ({
       name: faker.word.noun(),
     },
   ],
-  status: faker.helpers.arrayElement(Object.values(PET_STATUS)),
+  status: faker.helpers.arrayElement(['available', 'pending', 'sold']),
 });
 
 const generatePetUpdate = (existingPet) => ({
-  ...existingPet,
-  name: faker.person.firstName(),
-  status: PET_STATUS.SOLD,
+  id: existingPet.id,
+  name: faker.animal.type(),
+  category: existingPet.category,
+  photoUrls: existingPet.photoUrls,
+  tags: existingPet.tags,
+  status: faker.helpers.arrayElement(['available', 'pending', 'sold']),
 });
 
 // Web data generator
