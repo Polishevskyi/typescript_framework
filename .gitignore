@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+yarn.lock
+.pnpm-store/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Test results & reports
+test-results/
+playwright-report/
+allure-results/
+allure-report/
+coverage/
+.nyc_output/
+junit.xml
+reports/
+
+# Screenshots & Videos
+screenshots/
+videos/
+traces/
+
+# Mobile app files
+*.apk
+*.ipa
+*.app
+*.aab
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Playwright
+playwright/.cache/
+.playwright/
+
+# WebdriverIO
+.eslintcache
+.cache/
+
+# Build & Dist
+dist/
+build/
+out/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Debug
+debug.log
+
+# Git hooks
+.husky/_
