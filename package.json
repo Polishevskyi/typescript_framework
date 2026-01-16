@@ -1,56 +1,61 @@
 {
-  "name": "javascript-framework",
+  "name": "saucedemo-automation-framework",
   "version": "1.0.0",
-  "description": "Unified JavaScript automation framework for Web (Playwright) and Mobile (WebdriverIO) testing",
+  "description": "Senior-level automation framework for SauceDemo with Playwright, Allure, and Data Generation",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:web && npm run test:mobile",
-    "test:web": "cd web && npm run test",
-    "test:web:headed": "cd web && npm run test:headed",
-    "test:web:e2e": "cd web && npm run test:e2e",
-    "test:web:api": "cd web && npm run test:api",
-    "test:web:chrome": "cd web && npm run test:chrome",
-    "test:web:firefox": "cd web && npm run test:firefox",
-    "test:web:webkit": "cd web && npm run test:webkit",
-    "test:web:all": "cd web && npm run test:all",
-    "test:mobile": "cd mobile && npm run test",
-    "test:mobile:api": "cd mobile && npm run test:api",
-    "test:mobile:mobile": "cd mobile && npm run test:mobile",
-    "bs:upload-app": "cd mobile && npm run bs:upload-app",
-    "allure:generate": "npm run allure:generate:web && npm run allure:generate:mobile",
-    "allure:generate:web": "cd web && npm run allure:generate",
-    "allure:generate:mobile": "cd mobile && npm run allure:generate",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:web": "playwright test tests/web",
+    "test:api": "playwright test tests/api --project=api",
+    "test:chrome": "playwright test tests/web --project=chromium-desktop --project=chromium-mobile --project=chromium-tablet",
+    "test:firefox": "playwright test tests/web --project=firefox-desktop --project=firefox-mobile --project=firefox-tablet",
+    "test:webkit": "playwright test tests/web --project=webkit-desktop --project=webkit-mobile --project=webkit-tablet",
+    "test:all": "playwright test --project=chromium-desktop --project=api",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:serve": "allure serve allure-results",
     "allure:open": "allure open allure-report",
-    "lint": "npm run lint:web && npm run lint:mobile",
-    "lint:web": "cd web && npm run lint",
-    "lint:mobile": "cd mobile && npm run lint",
-    "lint:fix": "npm run lint:fix:web && npm run lint:fix:mobile",
-    "lint:fix:web": "cd web && npm run lint:fix",
-    "lint:fix:mobile": "cd mobile && npm run lint:fix",
-    "format": "npm run format:web && npm run format:mobile",
-    "format:web": "cd web && npm run format",
-    "format:mobile": "cd mobile && npm run format",
-    "format:check": "npm run format:check:web && npm run format:check:mobile",
-    "format:check:web": "cd web && npm run format:check",
-    "format:check:mobile": "cd mobile && npm run format:check",
-    "install:all": "npm install && cd web && npm install && cd ../mobile && npm install"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\""
   },
   "keywords": [
     "playwright",
-    "webdriverio",
     "automation",
     "testing",
     "allure",
     "e2e",
-    "mobile-testing",
-    "api-testing",
-    "javascript-framework"
+    "ui-testing",
+    "api-testing"
   ],
-  "author": "Polishevskyi",
+  "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.0.3",
+    "@playwright/test": "^1.48.0",
+    "allure-commandline": "^2.32.0",
+    "allure-playwright": "^3.0.3",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-playwright": "^1.8.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.3.3"
+  },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

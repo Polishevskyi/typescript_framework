@@ -17,18 +17,11 @@ allure-report/
 coverage/
 .nyc_output/
 junit.xml
-reports/
 
 # Screenshots & Videos
 screenshots/
 videos/
 traces/
-
-# Mobile app files
-*.apk
-*.ipa
-*.app
-*.aab
 
 # Logs
 *.log
@@ -56,10 +49,6 @@ desktop.ini
 playwright/.cache/
 .playwright/
 
-# WebdriverIO
-.eslintcache
-.cache/
-
 # Build & Dist
 dist/
 build/
@@ -69,10 +58,7 @@ out/
 tmp/
 temp/
 *.tmp
-*.temp
 
 # Debug
 debug.log
 
-# Git hooks
-.husky/_
