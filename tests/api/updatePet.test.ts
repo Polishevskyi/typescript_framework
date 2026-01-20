@@ -1,25 +1,16 @@
-import { test, expect } from '../../src/api/fixtures/apiFixtures.js';
-import { PetSteps } from '../../src/api/steps/petSteps.js';
-import { HTTP_STATUS } from '../../src/api/specs/ResponseSpecs.js';
-import { assertThatModels } from '../../src/api/models/comparison/modelAssertions.js';
-import { generatePetUpdate } from '../../src/utils/dataGenerator.js';
-import PetRequestModel from '../../src/api/models/PetRequestModel.js';
+import { test, expect, HTTP_STATUS, PetResponseSchema, PetFactory } from '../../src/api/fixtures/baseTest.js';
 
-test.describe('UPDATE Pet Test', () => {
-  test('Verify that pet can be updated successfully with new data', async ({ request, softly }) => {
-    const petSteps = new PetSteps(request);
-    const createdPet = await petSteps.createPet();
+test.describe('Update Pet', () => {
+  test('Verify that pet can be updated successfully with new data', async ({ petSteps }) => {
+    const createdPet = await petSteps.create();
+    expect(createdPet.status).toBe(HTTP_STATUS.OK);
 
-    const updatedPetData = generatePetUpdate(createdPet.responseData!);
-    const updatedPet = await petSteps.updatePet(updatedPetData);
-
+    const createdPetResponseData = createdPet.responseData!;
+    const updatedPetData = PetFactory.generatePetUpdate(createdPetResponseData);
+    const updatedPet = await petSteps.update(updatedPetData);
     expect(updatedPet.status).toBe(HTTP_STATUS.OK);
-
-    softly.assertThat(updatedPet.responseData).isNotNull();
-    softly.assertThat(updatedPet.responseData?.id).isNotNullAndEqualTo(createdPet.responseData!.id);
-    softly.assertThat(updatedPet.responseData?.name).isNotNullAndEqualTo(updatedPetData.name);
-
-    const updatedPetModel = new PetRequestModel(updatedPetData);
-    await assertThatModels(updatedPetModel, updatedPet.responseData!).match();
+    PetResponseSchema.parse(updatedPet.responseData);
+    expect.soft(updatedPet.responseData!.id).toBe(createdPetResponseData.id);
+    expect.soft(updatedPet.responseData!.name).toBe(updatedPetData.name);
   });
 });

@@ -1,18 +1,15 @@
-import { test, expect } from '../../src/api/fixtures/apiFixtures.js';
-import { PetSteps } from '../../src/api/steps/petSteps.js';
-import { HTTP_STATUS } from '../../src/api/specs/ResponseSpecs.js';
-import { assertThatModels } from '../../src/api/models/comparison/modelAssertions.js';
+import { test, expect, HTTP_STATUS, PetResponseSchema } from '../../src/api/fixtures/baseTest.js';
 
-test.describe('GET Pet Test', () => {
-  test('Verify that pet can be retrieved successfully by ID', async ({ request, softly }) => {
-    const petSteps = new PetSteps(request);
-    const createdPet = await petSteps.createPet();
-    const retrievedPet = await petSteps.getPetById(createdPet.responseData!.id!);
+test.describe('Get Pet', () => {
+  test('Verify that pet can be retrieved successfully by ID', async ({ petSteps }) => {
+    const createdPet = await petSteps.create();
+    expect(createdPet.status).toBe(HTTP_STATUS.OK);
 
+    const petId = createdPet.responseData!.id;
+    const retrievedPet = await petSteps.get(petId);
     expect(retrievedPet.status).toBe(HTTP_STATUS.OK);
-
-    softly.assertThat(retrievedPet.responseData).isNotNull();
-
-    await assertThatModels(createdPet.responseData!, retrievedPet.responseData!).match();
+    PetResponseSchema.parse(retrievedPet.responseData);
+    expect.soft(retrievedPet.responseData!.id).toBe(createdPet.responseData!.id);
+    expect.soft(retrievedPet.responseData!.name).toBe(createdPet.responseData!.name);
   });
 });

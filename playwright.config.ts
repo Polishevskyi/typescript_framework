@@ -44,7 +44,7 @@ export default defineConfig({
   retries: Number(process.env.PLAYWRIGHT_RETRIES!),
   workers: Number(process.env.PLAYWRIGHT_WORKERS!),
   testMatch: /.*\.(test|spec)\.(ts|js|tsx|jsx)/,
-  reporter: [['allure-playwright', { outputFolder: 'allure-results' }]],
+  reporter: 'list', // Removed Allure reporter
   use: {
     headless: true,
     trace: 'retain-on-failure',
