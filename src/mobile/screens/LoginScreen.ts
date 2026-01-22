@@ -28,17 +28,17 @@ export class LoginScreen extends BaseScreen {
     super();
     if (driver.isAndroid) {
       this.userNameErrorText =
-        '//android.view.ViewGroup[@content-desc=\'Username-error-message\']/android.widget.TextView';
+        "//android.view.ViewGroup[@content-desc='Username-error-message']/android.widget.TextView";
       this.passwordErrorText =
-        '//android.view.ViewGroup[@content-desc=\'Password-error-message\']/android.widget.TextView';
+        "//android.view.ViewGroup[@content-desc='Password-error-message']/android.widget.TextView";
       this.credentialsErrorText =
-        '//android.view.ViewGroup[@content-desc=\'generic-error-message\']/android.widget.TextView';
+        "//android.view.ViewGroup[@content-desc='generic-error-message']/android.widget.TextView";
       this.loginText = '(//android.widget.TextView[@text="Login"])[1]';
     } else {
-      this.userNameErrorText = '//XCUIElementTypeOther[@name=\'Username-error-message\']/XCUIElementTypeStaticText';
-      this.passwordErrorText = '//XCUIElementTypeOther[@name=\'Password-error-message\']/XCUIElementTypeStaticText';
-      this.credentialsErrorText = '//XCUIElementTypeOther[@name=\'generic-error-message\']/XCUIElementTypeStaticText';
-      this.loginText = '//XCUIElementTypeStaticText[@name=\'Login\']';
+      this.userNameErrorText = "//XCUIElementTypeOther[@name='Username-error-message']/XCUIElementTypeStaticText";
+      this.passwordErrorText = "//XCUIElementTypeOther[@name='Password-error-message']/XCUIElementTypeStaticText";
+      this.credentialsErrorText = "//XCUIElementTypeOther[@name='generic-error-message']/XCUIElementTypeStaticText";
+      this.loginText = "//XCUIElementTypeStaticText[@name='Login']";
     }
   }
 

@@ -1,0 +1,134 @@
+[
+  {
+    "name": "sdk:automate:hub-management",
+    "entryType": "measure",
+    "startTime": 1769089139860.138,
+    "duration": 521.1498749256134,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:testhub",
+    "entryType": "measure",
+    "startTime": 1769089139859.0876,
+    "duration": 1044.4122080802917,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:percy",
+    "entryType": "measure",
+    "startTime": 1769089141301.2634,
+    "duration": 0.03137493133544922,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:automate:local",
+    "entryType": "measure",
+    "startTime": 1769089141301.3179,
+    "duration": 0.10175013542175293,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:automate:print-buildlink",
+    "entryType": "measure",
+    "startTime": 1769089150653.4902,
+    "duration": 281.86008310317993,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:cli:onStop",
+    "entryType": "measure",
+    "startTime": 1769089150653.2168,
+    "duration": 848.4915001392365,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:automate:hub-management",
+    "entryType": "measure",
+    "startTime": 1769089194285.5051,
+    "duration": 427.32445883750916,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:testhub",
+    "entryType": "measure",
+    "startTime": 1769089194284.279,
+    "duration": 902.2524170875549,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:percy",
+    "entryType": "measure",
+    "startTime": 1769089195459.5513,
+    "duration": 0.06287503242492676,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:automate:local",
+    "entryType": "measure",
+    "startTime": 1769089195459.6643,
+    "duration": 0.20554089546203613,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:automate:print-buildlink",
+    "entryType": "measure",
+    "startTime": 1769089252740.2546,
+    "duration": 389.80741691589355,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  },
+  {
+    "name": "sdk:cli:onStop",
+    "entryType": "measure",
+    "startTime": 1769089252739.2273,
+    "duration": 1049.6029999256134,
+    "detail": null,
+    "success": true,
+    "failure": null,
+    "worker": "unknown",
+    "platform": 0
+  }
+]

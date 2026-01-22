@@ -31,14 +31,14 @@ export class ProductsScreen extends BaseScreen {
     if (driver.isAndroid) {
       this.openMenuButton = '~open menu';
       this.cartIcon = '~cart badge';
-      this.productsHeader = '//android.widget.TextView[@text=\'Products\']';
-      this.firstProductName = '(//android.widget.TextView[@content-desc=\'store item text\'])[1]';
-      this.firstProduct = '(//android.view.ViewGroup[@content-desc=\'store item\'])[1]';
+      this.productsHeader = "//android.widget.TextView[@text='Products']";
+      this.firstProductName = "(//android.widget.TextView[@content-desc='store item text'])[1]";
+      this.firstProduct = "(//android.view.ViewGroup[@content-desc='store item'])[1]";
     } else {
       this.openMenuButton = '~tab bar option menu';
       this.cartIcon = '~tab bar option cart';
-      this.productsHeader = '//XCUIElementTypeStaticText[@name=\'Products\']';
-      this.firstProductName = '(//XCUIElementTypeStaticText[@name=\'store item text\'])[1]';
+      this.productsHeader = "//XCUIElementTypeStaticText[@name='Products']";
+      this.firstProductName = "(//XCUIElementTypeStaticText[@name='store item text'])[1]";
       this.firstProduct = '~store item';
     }
   }

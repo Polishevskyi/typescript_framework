@@ -1,5 +1,5 @@
 import type { APIResponse } from '@playwright/test';
-import { HTTP_STATUS } from '../../../utils/constants.js';
+import { StatusCodes } from 'http-status-codes';
 
 class ResponseValidator {
   private expectedStatuses: number[];
@@ -22,12 +22,12 @@ class ResponseValidator {
 
 const ResponseValidators = {
   requestReturnsOKSpec(): ResponseValidator {
-    return new ResponseValidator(HTTP_STATUS.OK);
+    return new ResponseValidator(StatusCodes.OK);
   },
 
   requestReturnsOKOrNotFoundSpec(): ResponseValidator {
-    return new ResponseValidator([HTTP_STATUS.OK, HTTP_STATUS.NOT_FOUND]);
+    return new ResponseValidator([StatusCodes.OK, StatusCodes.NOT_FOUND]);
   },
 } as const;
 
-export { HTTP_STATUS, ResponseValidators };
+export { ResponseValidators };

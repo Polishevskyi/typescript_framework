@@ -2,7 +2,7 @@ type Capability = Record<string, any>;
 
 export class CapabilitiesFactory {
   private static getBrowserStackOptions() {
-    const buildName = `${process.env.MOBILE_PLATFORM!} - ${new Date().toLocaleString()}`;
+    const buildName = `${process.env.MOBILE_PLATFORM!} - ${new Date().toLocaleDateString('en-GB').split('/').join('-')} ${new Date().toTimeString().slice(0, 5)}`;
 
     return {
       userName: process.env.BROWSERSTACK_USERNAME!,

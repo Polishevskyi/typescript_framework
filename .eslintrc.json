@@ -15,29 +15,14 @@
   "rules": {
     "no-console": "off",
     "import/extensions": "off",
-    "@typescript-eslint/import/extensions": "off",
     "class-methods-use-this": "off",
     "no-await-in-loop": "off",
     "import/prefer-default-export": "off",
-    "max-len": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-constructor-return": "off",
-    "@typescript-eslint/no-constructor-return": "off",
     "playwright/expect-expect": "error",
     "playwright/no-wait-for-selector": "off",
-    "playwright/no-wait-for-timeout": "off",
-    "func-names": "off",
-    "comma-dangle": "off",
-    "@typescript-eslint/comma-dangle": "off",
-    "object-curly-newline": "off",
-    "object-curly-spacing": "off",
-    "object-property-newline": "off",
-    "indent": "off",
-    "@typescript-eslint/indent": "off",
-    "quotes": "off",
-    "@typescript-eslint/quotes": ["error", "single"],
-    "semi": "off",
-    "@typescript-eslint/semi": "error"
+    "playwright/no-wait-for-timeout": "off"
   },
   "overrides": [
     {

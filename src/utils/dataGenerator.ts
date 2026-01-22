@@ -55,6 +55,7 @@ class PetDataGenerator {
   }
 }
 
+// Web data generators
 const WebDataGenerator = {
   generateUserInfo() {
     return {

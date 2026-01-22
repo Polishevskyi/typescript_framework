@@ -42,7 +42,7 @@ const projects: PlaywrightTestConfig['projects'] = [
 export default defineConfig({
   fullyParallel: true,
   retries: 3,
-  workers: 3,
+  workers: 5,
   testMatch: /.*\.(test|spec)\.(ts|js|tsx|jsx)/,
   reporter: 'list',
   use: {

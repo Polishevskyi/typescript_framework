@@ -11,9 +11,9 @@ export class CartScreen extends BaseScreen {
   constructor() {
     super();
     if (driver.isAndroid) {
-      this.goShoppingButton = '//android.widget.TextView[@text=\'Go Shopping\']';
+      this.goShoppingButton = "//android.widget.TextView[@text='Go Shopping']";
     } else {
-      this.goShoppingButton = '//XCUIElementTypeOther[@name=\'Go Shopping button\']';
+      this.goShoppingButton = "//XCUIElementTypeOther[@name='Go Shopping button']";
     }
   }
 
