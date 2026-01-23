@@ -1,15 +1,18 @@
 #!/bin/bash
 
-# Telegram Notification Script for Playwright Tests
-# This script collects test results from Allure reports and sends notifications to Telegram
+# Telegram Notification Script for Test Automation
 # Usage: ./send-telegram-notification.sh
-# Required environment variables: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, GITHUB_REPOSITORY, GITHUB_SHA, etc.
 
-# Get test results from Allure
+# Load environment variables
+if [ -f .env ]; then
+    export $(cat .env | grep -v '^#' | xargs)
+fi
+
+# Get test results from Allure - only passed and failed tests
 if [ -d "allure-results" ]; then
-    TOTAL_TESTS=$(find allure-results -name "*.json" -exec jq -r '.status // empty' {} \; 2>/dev/null | grep -v "^$" | wc -l)
-    PASSED_TESTS=$(find allure-results -name "*.json" -exec jq -r '.status // empty' {} \; 2>/dev/null | grep -c "passed" || echo "0")
-    FAILED_TESTS=$(find allure-results -name "*.json" -exec jq -r '.status // empty' {} \; 2>/dev/null | grep -c "failed" || echo "0")
+    PASSED_TESTS=$(find allure-results -name "*.json" -exec jq -r 'select(.status == "passed") | .status' {} \; 2>/dev/null | wc -l)
+    FAILED_TESTS=$(find allure-results -name "*.json" -exec jq -r 'select(.status == "failed") | .status' {} \; 2>/dev/null | wc -l)
+    TOTAL_TESTS=$((PASSED_TESTS + FAILED_TESTS))
 else
     TOTAL_TESTS=0
     PASSED_TESTS=0
@@ -29,7 +32,10 @@ else
 fi
 
 # Determine status
-if [ "$JOB_STATUS" == "success" ]; then
+if [ "$TOTAL_TESTS" -eq 0 ]; then
+    STATUS_COLOR="🟡"
+    STATUS_TEXT="NO_TESTS"
+elif [ "$FAILED_TESTS" -eq 0 ]; then
     STATUS_COLOR="🟢"
     STATUS_TEXT="SUCCESS"
 else
@@ -37,32 +43,13 @@ else
     STATUS_TEXT="FAILED"
 fi
 
-# Create descriptive text for zero values
-if [ "$TOTAL_TESTS" -eq 0 ]; then
-    TOTAL_TESTS_TEXT="No tests found"
-else
-    TOTAL_TESTS_TEXT="$TOTAL_TESTS"
-fi
-
-if [ "$PASSED_TESTS" -eq 0 ]; then
-    PASSED_TESTS_TEXT="No tests passed"
-else
-    PASSED_TESTS_TEXT="$PASSED_TESTS"
-fi
-
-if [ "$FAILED_TESTS" -eq 0 ]; then
-    FAILED_TESTS_TEXT="No failures"
-else
-    FAILED_TESTS_TEXT="$FAILED_TESTS"
-fi
-
-# Build HTML-formatted message for Telegram
-MESSAGE="🚀 <b>Playwright Tests Completed!</b>
+# Build message for Telegram
+MESSAGE="🚀 <b>Test Run Completed!</b>
 
 📊 <b>Test Statistics:</b>
-• <b>Total tests:</b> $TOTAL_TESTS_TEXT
-• <b>Passed:</b> $PASSED_TESTS_TEXT ✅
-• <b>Failed:</b> $FAILED_TESTS_TEXT ❌
+• <b>Total tests:</b> $TOTAL_TESTS
+• <b>Passed:</b> $PASSED_TESTS ✅
+• <b>Failed:</b> $FAILED_TESTS ❌
 • <b>Success rate:</b> ${SUCCESS_RATE}%
 
 🔗 <b>Links:</b>
@@ -72,11 +59,26 @@ MESSAGE="🚀 <b>Playwright Tests Completed!</b>
 
 $STATUS_COLOR <b>Status:</b> $STATUS_TEXT"
 
-# Send message to Telegram using Bot API
-curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+# Check if Telegram credentials are provided
+if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+    echo "⚠️  Telegram credentials not provided. Skipping notification."
+    exit 0
+fi
+
+# Send message to Telegram
+RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   -H "Content-Type: application/json" \
   -d "{
     \"chat_id\": \"$TELEGRAM_CHAT_ID\",
     \"text\": \"$MESSAGE\",
     \"parse_mode\": \"HTML\"
-  }"
+  }")
+
+# Check if message was sent successfully
+if echo "$RESPONSE" | grep -q '"ok":true'; then
+    echo "✅ Telegram notification sent successfully!"
+else
+    echo "❌ Failed to send Telegram notification:"
+    echo "$RESPONSE"
+    exit 1
+fi

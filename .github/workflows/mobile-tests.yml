@@ -19,14 +19,6 @@ on:
       - '.github/workflows/mobile-tests.yml'
   workflow_dispatch:
     inputs:
-      test_type:
-        description: 'Test type to run'
-        required: false
-        default: 'all'
-        type: choice
-        options:
-          - all
-          - mobile
       platform:
         description: 'Platform to run tests on'
         required: false
@@ -65,10 +57,9 @@ jobs:
         run: npm run format:check
 
   mobile-tests:
-    name: Mobile Tests
+    name: Mobile Tests on BrowserStack
     runs-on: ubuntu-latest
     needs: lint-and-format
-    if: ${{ !github.event.inputs.test_type || github.event.inputs.test_type == 'mobile' || github.event.inputs.test_type == 'all' }}
     timeout-minutes: 60
     steps:
       - name: Checkout code
