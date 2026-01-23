@@ -1,7 +1,7 @@
 {
-  "name": "saucedemo-automation-framework",
+  "name": "mobile-web-api-test-automation-framework",
   "version": "1.0.0",
-  "description": "Senior-level automation framework for SauceDemo with Playwright, Allure, and Data Generation",
+  "description": "Comprehensive test automation framework for API, Web, and Mobile testing with TypeScript, Playwright, WebdriverIO, Appium, and Allure reporting",
   "type": "module",
   "main": "index.js",
   "scripts": {
