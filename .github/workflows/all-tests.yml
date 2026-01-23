@@ -1,4 +1,4 @@
-name: All Tests
+name: All Tests (API + Web + Mobile)
 
 on:
   workflow_dispatch:
