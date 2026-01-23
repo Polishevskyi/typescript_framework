@@ -76,7 +76,6 @@ describe('Login negative cases functionality', () => {
       await loginScreen.enterUsername(username);
       await loginScreen.enterPassword(password);
       await loginScreen.tapLoginButtonExpectingError();
-
       const actualError = await loginScreen.getErrorText(errorType);
       expect(actualError).toBe(expectedError);
     });

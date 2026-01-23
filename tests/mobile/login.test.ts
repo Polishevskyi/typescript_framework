@@ -5,7 +5,6 @@ describe('Login functionality', () => {
     const menuScreen = await productsScreen.openMenu();
     const loginScreen = await menuScreen.navigateToLogin();
     await loginScreen.login(validCredentials.username, validCredentials.password);
-
     const headerText = await productsScreen.getProductsHeaderText();
     expect(headerText).toBe(MobileConstants.PAGE_TITLES.PRODUCTS);
   });

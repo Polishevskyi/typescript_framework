@@ -12,10 +12,8 @@ test.describe('Shopping cart functionality', () => {
     await loggedInProductsPage.addProductAndVerifyCart(PRODUCT_IDS.BACKPACK, COUNTS.ONE);
     await loggedInProductsPage.addProductAndVerifyCart(PRODUCT_IDS.BIKE_LIGHT, COUNTS.TWO);
     await loggedInProductsPage.addProductAndVerifyCart(PRODUCT_IDS.BOLT_TSHIRT, COUNTS.THREE);
-
     await loggedInProductsPage.clickShoppingCart();
     await expect.soft(cartPage.pageTitle).toHaveText(PAGE_TITLES.YOUR_CART);
-
     await expect.soft(cartPage.getItemsCount()).resolves.toBe(COUNTS.THREE);
 
     const items = await cartPage.getItemsNames();
