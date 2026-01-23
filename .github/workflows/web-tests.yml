@@ -1,0 +1,124 @@
+name: Web Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'tests/web/**'
+      - 'main/web/**'
+      - '.github/workflows/web-tests.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'tests/web/**'
+      - 'main/web/**'
+      - '.github/workflows/web-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  web-tests:
+    name: Web Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Web tests
+        env:
+          WEB_BASE_URL: ${{ secrets.WEB_BASE_URL }}
+          WEB_CREDENTIALS_USERNAME: ${{ secrets.WEB_CREDENTIALS_USERNAME }}
+          WEB_CREDENTIALS_PASSWORD: ${{ secrets.WEB_CREDENTIALS_PASSWORD }}
+          WEB_HEADLESS: ${{ secrets.WEB_HEADLESS }}
+        run: npm run test:web
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-web
+          path: allure-results
+          retention-days: 30
+
+      - name: Upload test videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-videos-web
+          path: test-results
+          retention-days: 7
+
+  generate-allure-report:
+    name: Generate Allure Report
+    runs-on: ubuntu-latest
+    needs: [web-tests]
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download Allure results
+        uses: actions/download-artifact@v4
+        with:
+          path: allure-results
+
+      - name: Generate Allure Report
+        run: npm run allure:report
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-web
+          path: allure-report
+          retention-days: 30
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Send Telegram notification
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          GITHUB_EVENT_REPOSITORY_NAME: ${{ github.event.repository.name }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          chmod +x send-telegram-notification.sh
+          ./send-telegram-notification.sh

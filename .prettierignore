@@ -29,6 +29,9 @@ main/mobile/apps/
 *.zip
 *.app
 
+# Git hooks (shell scripts)
+.husky/
+
 # Lock files
 package-lock.json
 yarn.lock
