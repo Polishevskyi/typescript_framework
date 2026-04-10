@@ -2,7 +2,8 @@ type Capability = Record<string, any>;
 
 export class CapabilitiesFactory {
   private static getBrowserStackOptions() {
-    const buildName = `${process.env.MOBILE_PLATFORM!} - ${new Date().toLocaleDateString('en-GB').split('/').join('-')} ${new Date().toTimeString().slice(0, 5)}`;
+    const now = new Date();
+    const buildName = `${process.env.MOBILE_PLATFORM!} - ${now.toLocaleDateString('en-GB').replace(/\//g, '-')} ${now.toTimeString().slice(0, 5)}`;
 
     return {
       userName: process.env.BROWSERSTACK_USERNAME!,
@@ -26,19 +27,21 @@ export class CapabilitiesFactory {
 
   private static createAndroidCloudCapabilities(): Capability {
     const bstackOptions = this.getBrowserStackOptions();
+    const deviceName = process.env.ANDROID_CLOUD_DEVICE_NAME!;
+    const platformVersion = process.env.ANDROID_CLOUD_PLATFORM_VERSION!;
 
     return {
       platformName: 'Android',
-      'appium:deviceName': process.env.ANDROID_CLOUD_DEVICE_NAME!,
-      'appium:platformVersion': process.env.ANDROID_CLOUD_PLATFORM_VERSION!,
+      'appium:deviceName': deviceName,
+      'appium:platformVersion': platformVersion,
       'appium:automationName': 'UiAutomator2',
       'appium:app': process.env.BROWSERSTACK_ANDROID_APP!,
       'appium:appPackage': process.env.ANDROID_CLOUD_APP_PACKAGE!,
       'appium:appActivity': process.env.ANDROID_CLOUD_APP_ACTIVITY!,
       'bstack:options': {
         ...bstackOptions,
-        deviceName: process.env.ANDROID_CLOUD_DEVICE_NAME!,
-        osVersion: process.env.ANDROID_CLOUD_PLATFORM_VERSION!,
+        deviceName,
+        osVersion: platformVersion,
       },
     };
   }
@@ -56,18 +59,20 @@ export class CapabilitiesFactory {
 
   private static createIosCloudCapabilities(): Capability {
     const bstackOptions = this.getBrowserStackOptions();
+    const deviceName = process.env.IOS_CLOUD_DEVICE_NAME!;
+    const platformVersion = process.env.IOS_CLOUD_PLATFORM_VERSION!;
 
     return {
       platformName: 'iOS',
-      'appium:deviceName': process.env.IOS_CLOUD_DEVICE_NAME!,
-      'appium:platformVersion': process.env.IOS_CLOUD_PLATFORM_VERSION!,
+      'appium:deviceName': deviceName,
+      'appium:platformVersion': platformVersion,
       'appium:automationName': 'XCUITest',
       'appium:app': process.env.BROWSERSTACK_IOS_APP!,
       'appium:bundleId': process.env.IOS_CLOUD_BUNDLE_ID!,
       'bstack:options': {
         ...bstackOptions,
-        deviceName: process.env.IOS_CLOUD_DEVICE_NAME!,
-        osVersion: process.env.IOS_CLOUD_PLATFORM_VERSION!,
+        deviceName,
+        osVersion: platformVersion,
       },
     };
   }

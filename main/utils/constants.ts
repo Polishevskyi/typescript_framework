@@ -42,20 +42,8 @@ const MobileConstants = {
     PRODUCTS: 'Products',
   },
 
-  CART_DATA: {
-    ITEM_PRICE: '$29.99',
-    SINGLE_ITEM_COUNT: '1',
-  },
-
   BUTTON_LABELS: {
     GO_SHOPPING: 'Go Shopping',
-  },
-
-  SORT_TYPES: {
-    NAME_ASCENDING: 'nameAsc',
-    NAME_DESCENDING: 'nameDesc',
-    PRICE_ASCENDING: 'priceAsc',
-    PRICE_DESCENDING: 'priceDesc',
   },
 
   SORT_RESULTS: {

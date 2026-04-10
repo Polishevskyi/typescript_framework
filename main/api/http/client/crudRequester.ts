@@ -9,6 +9,12 @@ interface ResponseValidator {
 type RequestBody = Record<string, unknown>;
 
 class ResourceClient extends ApiHttpClient {
+  private validateResponse(response: APIResponse): void {
+    if (this.responseValidator) {
+      (this.responseValidator as ResponseValidator).validate(response);
+    }
+  }
+
   async create(body: RequestBody): Promise<APIResponse> {
     const url = `${this.baseURL}${(this.endpoint as ResourceEndpointType).getUrl()}`;
 
@@ -17,10 +23,7 @@ class ResourceClient extends ApiHttpClient {
       data: body,
     });
 
-    if (this.responseValidator) {
-      (this.responseValidator as ResponseValidator).validate(response);
-    }
-
+    this.validateResponse(response);
     return response;
   }
 
@@ -31,10 +34,7 @@ class ResourceClient extends ApiHttpClient {
       headers: this.defaultHeaders,
     });
 
-    if (this.responseValidator) {
-      (this.responseValidator as ResponseValidator).validate(response);
-    }
-
+    this.validateResponse(response);
     return response;
   }
 
@@ -46,10 +46,7 @@ class ResourceClient extends ApiHttpClient {
       data: body,
     });
 
-    if (this.responseValidator) {
-      (this.responseValidator as ResponseValidator).validate(response);
-    }
-
+    this.validateResponse(response);
     return response;
   }
 
@@ -60,10 +57,7 @@ class ResourceClient extends ApiHttpClient {
       headers: this.defaultHeaders,
     });
 
-    if (this.responseValidator) {
-      (this.responseValidator as ResponseValidator).validate(response);
-    }
-
+    this.validateResponse(response);
     return response;
   }
 }

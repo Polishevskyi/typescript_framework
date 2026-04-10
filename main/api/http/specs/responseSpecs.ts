@@ -20,13 +20,16 @@ class ResponseValidator {
   }
 }
 
+const OK_VALIDATOR = new ResponseValidator(StatusCodes.OK);
+const OK_OR_NOT_FOUND_VALIDATOR = new ResponseValidator([StatusCodes.OK, StatusCodes.NOT_FOUND]);
+
 const ResponseValidators = {
   requestReturnsOKSpec(): ResponseValidator {
-    return new ResponseValidator(StatusCodes.OK);
+    return OK_VALIDATOR;
   },
 
   requestReturnsOKOrNotFoundSpec(): ResponseValidator {
-    return new ResponseValidator([StatusCodes.OK, StatusCodes.NOT_FOUND]);
+    return OK_OR_NOT_FOUND_VALIDATOR;
   },
 } as const;
 

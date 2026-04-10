@@ -23,9 +23,11 @@ class LoginPage extends BasePage {
 
   async waitForLoginPage(): Promise<void> {
     await this.page.goto('/');
-    await this.usernameInput.waitFor({ state: 'visible' });
-    await this.passwordInput.waitFor({ state: 'visible' });
-    await this.loginButton.waitFor({ state: 'visible' });
+    await Promise.all([
+      this.usernameInput.waitFor({ state: 'visible' }),
+      this.passwordInput.waitFor({ state: 'visible' }),
+      this.loginButton.waitFor({ state: 'visible' }),
+    ]);
   }
 }
 

@@ -31,15 +31,6 @@ class PetDataGenerator {
     };
   }
 
-  static generatePetResponse(overrides: Partial<PetResponse> = {}): PetResponse {
-    const basePet = this.generatePetRequest();
-    return {
-      ...basePet,
-      id: faker.number.int({ min: 1, max: 100000 }),
-      ...overrides,
-    } as PetResponse;
-  }
-
   static generatePetUpdate(existingPet: PetResponse | PetRequest): PetRequest {
     return {
       ...existingPet,
