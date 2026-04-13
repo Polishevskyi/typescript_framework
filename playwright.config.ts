@@ -3,6 +3,8 @@ import { config } from 'dotenv';
 
 config();
 
+export const STORAGE_STATE = '.auth/storageState.json';
+
 const browsers = {
   chromium: devices['Desktop Chrome'],
   firefox: devices['Desktop Firefox'],
@@ -16,15 +18,22 @@ const viewports = {
 };
 
 const projects: PlaywrightTestConfig['projects'] = [
+  {
+    name: 'web-setup',
+    testMatch: /globalSetup\.ts/,
+    use: { baseURL: process.env.WEB_BASE_URL! },
+  },
   ...Object.entries(browsers).flatMap(([browserName, device]) =>
     Object.entries(viewports).map(([envName, viewport]) => ({
       name: `${browserName}-${envName}`,
       testDir: './tests/web',
+      dependencies: ['web-setup'],
       use: {
         ...device,
         baseURL: process.env.WEB_BASE_URL!,
         viewport,
         screenshot: 'only-on-failure' as const,
+        storageState: STORAGE_STATE,
       },
       metadata: { browser: browserName, env: envName, type: 'e2e' },
     }))

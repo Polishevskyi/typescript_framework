@@ -7,36 +7,31 @@ import DataGenerator from '../../utils/dataGenerator.js';
 import { WebConstants } from '../../utils/constants.js';
 import { wrapInAllureStep } from '../../utils/allureProxy.js';
 
-export const test = base.test.extend<{
-  cartPage: CartPage;
-  checkoutPage: CheckoutPage;
+type App = {
   loginPage: LoginPage;
   productsPage: ProductsPage;
+  cartPage: CartPage;
+  checkoutPage: CheckoutPage;
+};
+
+export const test = base.test.extend<{
+  app: App;
   loggedInProductsPage: ProductsPage;
   constants: typeof WebConstants;
   dataGenerator: typeof DataGenerator;
 }>({
-  cartPage: async ({ page }, use) => {
-    await use(wrapInAllureStep(new CartPage(page)));
+  app: async ({ page }, use) => {
+    await use({
+      loginPage: wrapInAllureStep(new LoginPage(page)),
+      productsPage: wrapInAllureStep(new ProductsPage(page)),
+      cartPage: wrapInAllureStep(new CartPage(page)),
+      checkoutPage: wrapInAllureStep(new CheckoutPage(page)),
+    });
   },
 
-  checkoutPage: async ({ page }, use) => {
-    await use(wrapInAllureStep(new CheckoutPage(page)));
-  },
-
-  loginPage: async ({ page }, use) => {
-    await use(wrapInAllureStep(new LoginPage(page)));
-  },
-
-  productsPage: async ({ page }, use) => {
-    await use(wrapInAllureStep(new ProductsPage(page)));
-  },
-
-  loggedInProductsPage: async ({ page, loginPage }, use) => {
-    await loginPage.navigateTo();
-    await loginPage.waitForLoginPage();
-    await loginPage.login(process.env.WEB_CREDENTIALS_USERNAME!, process.env.WEB_CREDENTIALS_PASSWORD!);
-    await use(wrapInAllureStep(new ProductsPage(page)));
+  loggedInProductsPage: async ({ app }, use) => {
+    await app.loginPage.navigateTo();
+    await use(app.productsPage);
   },
 
   constants: async ({}, use) => {
