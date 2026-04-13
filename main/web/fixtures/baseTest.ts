@@ -30,7 +30,7 @@ export const test = base.test.extend<{
   },
 
   loggedInProductsPage: async ({ app }, use) => {
-    await app.loginPage.navigateTo();
+    await app.productsPage.navigateTo();
     await use(app.productsPage);
   },
 

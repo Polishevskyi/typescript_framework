@@ -6,10 +6,6 @@ class LoginPage extends BasePage {
   private readonly passwordInput: Locator = this.page.locator('#password');
   private readonly loginButton: Locator = this.page.locator('#login-button');
 
-  async navigateTo(): Promise<void> {
-    await this.page.goto('/');
-  }
-
   async login(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
