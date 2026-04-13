@@ -2,17 +2,12 @@ import { type Locator } from '@playwright/test';
 import BasePage from './BasePage.js';
 
 class LoginPage extends BasePage {
-  private readonly usernameInput: Locator;
+  private readonly usernameInput: Locator = this.page.locator('#user-name');
+  private readonly passwordInput: Locator = this.page.locator('#password');
+  private readonly loginButton: Locator = this.page.locator('#login-button');
 
-  private readonly passwordInput: Locator;
-
-  private readonly loginButton: Locator;
-
-  constructor(page: BasePage['page']) {
-    super(page);
-    this.usernameInput = this.page.locator('#user-name');
-    this.passwordInput = this.page.locator('#password');
-    this.loginButton = this.page.locator('#login-button');
+  async navigateTo(): Promise<void> {
+    await this.page.goto('/');
   }
 
   async login(username: string, password: string): Promise<void> {
@@ -22,7 +17,6 @@ class LoginPage extends BasePage {
   }
 
   async waitForLoginPage(): Promise<void> {
-    await this.page.goto('/');
     await Promise.all([
       this.usernameInput.waitFor({ state: 'visible' }),
       this.passwordInput.waitFor({ state: 'visible' }),

@@ -3,10 +3,8 @@ import { BaseScreen } from './BaseScreen.js';
 
 export class CartScreen extends BaseScreen {
   private readonly productLabel = '~product label';
-
   private readonly removeItemButton = '~remove item';
-
-  private goShoppingButton!: string;
+  private readonly goShoppingButton!: string;
 
   constructor() {
     super();

@@ -1,11 +1,9 @@
 import { test, expect } from '../../main/web/fixtures/baseTest.js';
 
 test.describe('Login and logout functionality', () => {
-  test('Verify that user can successfully login and logout', async ({ loginPage, productsPage, constants }) => {
-    await loginPage.waitForLoginPage();
-    await loginPage.login(process.env.WEB_CREDENTIALS_USERNAME!, process.env.WEB_CREDENTIALS_PASSWORD!);
-    await expect.soft(productsPage.pageTitle).toHaveText(constants.PAGE_TITLES.PRODUCTS);
-    await productsPage.logout();
+  test('Verify that user can successfully login and logout', async ({ loggedInProductsPage, loginPage, constants }) => {
+    await expect.soft(loggedInProductsPage.pageTitle).toHaveText(constants.PAGE_TITLES.PRODUCTS);
+    await loggedInProductsPage.logout();
     await loginPage.waitForLoginPage();
   });
 });

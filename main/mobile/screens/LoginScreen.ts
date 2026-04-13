@@ -11,18 +11,12 @@ export type LoginErrorType = (typeof LoginErrorTypes)[keyof typeof LoginErrorTyp
 
 export class LoginScreen extends BaseScreen {
   private readonly usernameField = '~Username input field';
-
   private readonly passwordField = '~Password input field';
-
   private readonly loginButton = '~Login button';
-
-  private userNameErrorText!: string;
-
-  private passwordErrorText!: string;
-
-  private credentialsErrorText!: string;
-
-  private loginText!: string;
+  private readonly userNameErrorText!: string;
+  private readonly passwordErrorText!: string;
+  private readonly credentialsErrorText!: string;
+  private readonly loginText!: string;
 
   constructor() {
     super();

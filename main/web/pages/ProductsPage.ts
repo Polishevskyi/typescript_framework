@@ -1,22 +1,11 @@
-import { expect, type Locator } from '@playwright/test';
+import { type Locator } from '@playwright/test';
 import BasePage from './BasePage.js';
 
 class ProductsPage extends BasePage {
-  readonly shoppingCartBadge: Locator;
-
-  private readonly shoppingCartLink: Locator;
-
-  private readonly burgerMenu: Locator;
-
-  private readonly logoutLink: Locator;
-
-  constructor(page: BasePage['page']) {
-    super(page);
-    this.shoppingCartLink = this.page.locator('.shopping_cart_link');
-    this.shoppingCartBadge = this.page.locator('.shopping_cart_badge');
-    this.burgerMenu = this.page.locator('#react-burger-menu-btn');
-    this.logoutLink = this.page.locator('#logout_sidebar_link');
-  }
+  readonly shoppingCartBadge: Locator = this.page.locator('.shopping_cart_badge');
+  private readonly shoppingCartLink: Locator = this.page.locator('.shopping_cart_link');
+  private readonly burgerMenu: Locator = this.page.locator('#react-burger-menu-btn');
+  private readonly logoutLink: Locator = this.page.locator('#logout_sidebar_link');
 
   async logout(): Promise<void> {
     await this.burgerMenu.click();
@@ -24,9 +13,8 @@ class ProductsPage extends BasePage {
     await this.logoutLink.click();
   }
 
-  async addProductAndVerifyCart(productName: string, expectedCount: number): Promise<void> {
-    await this.page.locator(`[data-test="add-to-cart-${productName}"]`).click();
-    await expect.soft(this.shoppingCartBadge).toHaveText(expectedCount.toString());
+  async addProduct(productId: string): Promise<void> {
+    await this.page.locator(`[data-test="add-to-cart-${productId}"]`).click();
   }
 
   async clickShoppingCart(): Promise<void> {

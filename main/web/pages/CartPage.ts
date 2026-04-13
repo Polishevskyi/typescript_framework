@@ -2,20 +2,17 @@ import { type Locator } from '@playwright/test';
 import BasePage from './BasePage.js';
 
 class CartPage extends BasePage {
-  private readonly cartItem: Locator;
+  private readonly cartItem: Locator = this.page.locator('.cart_item');
+  private readonly cartItemName: Locator = this.page.locator('.inventory_item_name');
+  private readonly continueShoppingButton: Locator = this.page.locator('#continue-shopping');
+  private readonly checkoutButton: Locator = this.page.locator('#checkout');
 
-  private readonly cartItemName: Locator;
-
-  private readonly continueShoppingButton: Locator;
-
-  private readonly checkoutButton: Locator;
-
-  constructor(page: BasePage['page']) {
-    super(page);
-    this.cartItem = this.page.locator('.cart_item');
-    this.cartItemName = this.page.locator('.inventory_item_name');
-    this.continueShoppingButton = this.page.locator('#continue-shopping');
-    this.checkoutButton = this.page.locator('#checkout');
+  async waitForCartPage(): Promise<void> {
+    await this.cartItem
+      .first()
+      .waitFor({ state: 'attached' })
+      .catch(() => {});
+    await this.continueShoppingButton.waitFor({ state: 'visible' });
   }
 
   async removeProduct(productName: string): Promise<void> {

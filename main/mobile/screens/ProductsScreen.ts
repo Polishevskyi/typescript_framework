@@ -5,26 +5,16 @@ import { CartScreen } from './CartScreen.js';
 
 export class ProductsScreen extends BaseScreen {
   private readonly sortButton = '~sort button';
-
   private readonly sortNameAsc = '~nameAsc';
-
   private readonly sortNameDesc = '~nameDesc';
-
   private readonly sortPriceAsc = '~priceAsc';
-
   private readonly sortPriceDesc = '~priceDesc';
-
   private readonly addToCartButton = '~Add To Cart button';
-
-  private openMenuButton!: string;
-
-  private cartIcon!: string;
-
-  private productsHeader!: string;
-
-  private firstProductName!: string;
-
-  private firstProduct!: string;
+  private readonly openMenuButton!: string;
+  private readonly cartIcon!: string;
+  private readonly productsHeader!: string;
+  private readonly firstProductName!: string;
+  private readonly firstProduct!: string;
 
   constructor() {
     super();

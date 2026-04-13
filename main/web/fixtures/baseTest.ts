@@ -12,7 +12,6 @@ export const test = base.test.extend<{
   checkoutPage: CheckoutPage;
   loginPage: LoginPage;
   productsPage: ProductsPage;
-  loggedInHomePage: base.Page;
   loggedInProductsPage: ProductsPage;
   constants: typeof WebConstants;
   dataGenerator: typeof DataGenerator;
@@ -33,14 +32,11 @@ export const test = base.test.extend<{
     await use(wrapInAllureStep(new ProductsPage(page)));
   },
 
-  loggedInHomePage: async ({ page, loginPage }, use) => {
+  loggedInProductsPage: async ({ page, loginPage }, use) => {
+    await loginPage.navigateTo();
     await loginPage.waitForLoginPage();
     await loginPage.login(process.env.WEB_CREDENTIALS_USERNAME!, process.env.WEB_CREDENTIALS_PASSWORD!);
-    await use(page);
-  },
-
-  loggedInProductsPage: async ({ loggedInHomePage }, use) => {
-    await use(wrapInAllureStep(new ProductsPage(loggedInHomePage)));
+    await use(wrapInAllureStep(new ProductsPage(page)));
   },
 
   constants: async ({}, use) => {

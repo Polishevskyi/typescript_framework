@@ -1,11 +1,5 @@
 // Web constants
 const WebConstants = {
-  COUNTS: {
-    ONE: 1,
-    TWO: 2,
-    THREE: 3,
-  },
-
   PAGE_TITLES: {
     PRODUCTS: 'Products',
     YOUR_CART: 'Your Cart',
