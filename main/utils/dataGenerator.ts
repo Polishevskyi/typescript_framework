@@ -21,7 +21,7 @@ class PetDataGenerator {
 
   static generatePetRequest(overrides: Partial<PetRequest> = {}): PetRequest {
     return {
-      id: faker.number.int({ min: 1, max: 100000 }),
+      id: faker.number.int({ min: 1000000000, max: 9999999999 }),
       category: this.generateCategory(),
       name: faker.person.firstName(),
       photoUrls: [faker.image.urlLoremFlickr({ category: 'animals' })],
