@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker';
-import type { PetRequest, PetResponse, PetStatus } from '../api/schemas/petSchema.js';
-import type { PetCategory } from '../api/schemas/petCategorySchema.js';
-import type { PetTag } from '../api/schemas/petTagSchema.js';
+import type { z } from 'zod';
+import type { PetRequest, PetResponse, PetStatus, PetCategorySchema, PetTagSchema } from '../api/schemas/petSchema.js';
+
+type PetCategory = z.infer<typeof PetCategorySchema>;
+type PetTag = z.infer<typeof PetTagSchema>;
 
 // API data generators
 class PetDataGenerator {

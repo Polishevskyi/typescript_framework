@@ -34,4 +34,4 @@ export type PetRequest = z.infer<typeof PetRequestSchema>;
 export type PetResponse = z.infer<typeof PetResponseSchema>;
 export type PetStatus = z.infer<typeof PetStatusSchema>;
 
-export { PetStatusSchema, PetRequestSchema, PetResponseSchema };
+export { PetCategorySchema, PetTagSchema, PetStatusSchema, PetRequestSchema, PetResponseSchema };
