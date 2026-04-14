@@ -1,20 +1,16 @@
 import { faker } from '@faker-js/faker';
-import type { z } from 'zod';
-import type { PetRequest, PetResponse, PetStatus, PetCategorySchema, PetTagSchema } from '../api/schemas/petSchema.js';
-
-type PetCategory = z.infer<typeof PetCategorySchema>;
-type PetTag = z.infer<typeof PetTagSchema>;
+import type { PetRequest, PetResponse, PetStatus } from '../api/schemas/petSchema.js';
 
 // API data generators
 class PetDataGenerator {
-  static generateCategory(): PetCategory {
+  static generateCategory() {
     return {
       id: faker.number.int({ min: 1, max: 100 }),
       name: faker.helpers.arrayElement(['Dogs', 'Cats', 'Birds', 'Fish', 'Reptiles']),
     };
   }
 
-  static generateTag(): PetTag {
+  static generateTag() {
     return {
       id: faker.number.int({ min: 1, max: 100 }),
       name: faker.word.noun(),
