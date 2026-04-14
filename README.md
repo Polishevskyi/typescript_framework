@@ -22,7 +22,7 @@
 
 Comprehensive test automation framework for **API**, **Web**, and **Mobile** testing with:
 
-- **API Testing** - Playwright API with PetStore API (Swagger)
+- **API Testing** - Playwright API with Restful-Booker API
 - **Web Testing** - Playwright with multi-browser support (Chromium, Firefox, WebKit) and multiple viewports (Desktop, Mobile, Tablet)
 - **Mobile Testing** - WebdriverIO + Appium with BrowserStack cloud and local execution (Android/iOS)
 - **Reporting** - Allure Reports with GitHub Pages deployment
@@ -51,11 +51,9 @@ typescript_framework/
 │   │   │   └── 📁 specs/                # Request/Response specifications
 │   │   │       └── responseSpecs.ts     # Response validators
 │   │   ├── 📁 schemas/                  # Zod Schemas
-│   │   │   ├── petSchema.ts             # Pet request/response schemas
-│   │   │   ├── petCategorySchema.ts     # Category schema
-│   │   │   └── petTagSchema.ts          # Tag schema
-│   │   ├── 📁 steps/                    # Step definitions
-│   │   │   └── petSteps.ts              # Pet API steps
+│   │   │   └── bookingSchema.ts         # Booking request/response schemas
+│   │   ├── 📁 services/                 # Service layer
+│   │   │   └── bookingService.ts        # Booking API service
 │   │   └── 📁 fixtures/                 # Test fixtures
 │   │       └── baseTest.ts              # Base API test setup
 │   ├── 📁 web/                          # Web Testing
@@ -84,10 +82,10 @@ typescript_framework/
 │       └── allureProxy.ts               # Allure integration
 ├── 📁 tests/
 │   ├── 📁 api/                          # API Tests
-│   │   ├── createPet.test.ts            # Create pet tests
-│   │   ├── getPet.test.ts               # Get pet tests
-│   │   ├── updatePet.test.ts            # Update pet tests
-│   │   └── deletePet.test.ts            # Delete pet tests
+│   │   ├── createBooking.test.ts        # Create booking tests
+│   │   ├── getBooking.test.ts           # Get booking tests
+│   │   ├── updateBooking.test.ts        # Update booking tests
+│   │   └── deleteBooking.test.ts        # Delete booking tests
 │   ├── 📁 web/                          # Web Tests
 │   │   ├── login.test.ts                # Login tests
 │   │   ├── shopping.test.ts             # Shopping tests
@@ -159,7 +157,7 @@ typescript_framework/
 ## 🌐 Supported Platforms
 
 **Mobile:** Android 12.0+ / iOS 18.0+ (Local & BrowserStack Cloud)  
-**API:** PetStore API (Swagger) - https://petstore.swagger.io/v2 (REST/JSON)  
+**API:** Restful-Booker API - https://restful-booker.herokuapp.com (REST/JSON)  
 **Web:** Chromium, Firefox, WebKit (Desktop/Mobile/Tablet) - SauceDemo - https://www.saucedemo.com
 
 ---
@@ -246,23 +244,24 @@ export class CapabilitiesFactory {
 
 ```typescript
 // main/utils/dataGenerator.ts
-export class PetDataGenerator {
-  static generatePetRequest(overrides: Partial<PetRequest> = {}): PetRequest {
+class BookingDataGenerator {
+  static generateBookingRequest(overrides: Partial<BookingRequest> = {}): BookingRequest {
+    const checkin = faker.date.soon({ days: 30 });
+    const checkout = new Date(checkin);
+    checkout.setDate(checkout.getDate() + faker.number.int({ min: 1, max: 14 }));
+
     return {
-      id: faker.number.int({ min: 1, max: 100000 }),
-      category: this.generateCategory(),
-      name: faker.person.firstName(),
-      photoUrls: [faker.image.urlLoremFlickr({ category: 'animals' })],
-      tags: [this.generateTag()],
-      status: faker.helpers.arrayElement(['available', 'pending', 'sold']),
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      totalprice: faker.number.int({ min: 50, max: 500 }),
+      depositpaid: faker.datatype.boolean(),
+      bookingdates: {
+        checkin: checkin.toISOString().split('T')[0],
+        checkout: checkout.toISOString().split('T')[0],
+      },
+      additionalneeds: faker.helpers.arrayElement(['Breakfast', 'Lunch', 'Dinner', 'Airport Transfer']),
       ...overrides,
     };
-  }
-
-  static generatePetWithUniquePrefix(prefix: string): PetRequest {
-    return this.generatePetRequest({
-      name: `${prefix}_${faker.string.alphanumeric(8)}`,
-    });
   }
 }
 ```
@@ -273,13 +272,14 @@ export class PetDataGenerator {
 
 ```typescript
 // main/utils/dataGenerator.ts
-export class PetDataGenerator {
-  static generatePetUpdate(existingPet: PetResponse | PetRequest): PetRequest {
+class BookingDataGenerator {
+  static generateBookingUpdate(existing: BookingRequest): BookingRequest {
     return {
-      ...existingPet,
-      name: faker.animal.type(),
-      status: faker.helpers.arrayElement(['available', 'pending', 'sold']),
-    } as PetRequest;
+      ...existing,
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      totalprice: faker.number.int({ min: 50, max: 500 }),
+    };
   }
 }
 ```
@@ -576,7 +576,7 @@ npm run test:web
 npm run test:mobile
 
 # Run specific test file
-npx playwright test tests/api/createPet.test.ts
+npx playwright test tests/api/createBooking.test.ts
 npx playwright test tests/web/login.test.ts
 npx wdio run wdio.mobile.conf.ts --spec tests/mobile/login.test.ts
 ```
