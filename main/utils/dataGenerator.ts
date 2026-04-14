@@ -1,46 +1,34 @@
 import { faker } from '@faker-js/faker';
-import type { PetRequest, PetResponse, PetStatus } from '../api/schemas/petSchema.js';
+import type { BookingRequest } from '../api/schemas/bookingSchema.js';
 
 // API data generators
-class PetDataGenerator {
-  static generateCategory() {
-    return {
-      id: faker.number.int({ min: 1, max: 100 }),
-      name: faker.helpers.arrayElement(['Dogs', 'Cats', 'Birds', 'Fish', 'Reptiles']),
-    };
-  }
+class BookingDataGenerator {
+  static generateBookingRequest(overrides: Partial<BookingRequest> = {}): BookingRequest {
+    const checkin = faker.date.soon({ days: 30 });
+    const checkout = new Date(checkin);
+    checkout.setDate(checkout.getDate() + faker.number.int({ min: 1, max: 14 }));
 
-  static generateTag() {
     return {
-      id: faker.number.int({ min: 1, max: 100 }),
-      name: faker.word.noun(),
-    };
-  }
-
-  static generatePetRequest(overrides: Partial<PetRequest> = {}): PetRequest {
-    return {
-      id: faker.number.int({ min: 1000000, max: 9999999 }),
-      category: this.generateCategory(),
-      name: faker.person.firstName(),
-      photoUrls: [faker.image.urlLoremFlickr({ category: 'animals' })],
-      tags: [this.generateTag()],
-      status: faker.helpers.arrayElement<PetStatus>(['available', 'pending', 'sold']),
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      totalprice: faker.number.int({ min: 50, max: 500 }),
+      depositpaid: faker.datatype.boolean(),
+      bookingdates: {
+        checkin: checkin.toISOString().split('T')[0],
+        checkout: checkout.toISOString().split('T')[0],
+      },
+      additionalneeds: faker.helpers.arrayElement(['Breakfast', 'Lunch', 'Dinner', 'Airport Transfer']),
       ...overrides,
     };
   }
 
-  static generatePetUpdate(existingPet: PetResponse | PetRequest): PetRequest {
+  static generateBookingUpdate(existing: BookingRequest): BookingRequest {
     return {
-      ...existingPet,
-      name: faker.animal.type(),
-      status: faker.helpers.arrayElement<PetStatus>(['available', 'pending', 'sold']),
-    } as PetRequest;
-  }
-
-  static generatePetWithUniquePrefix(prefix: string): PetRequest {
-    return this.generatePetRequest({
-      name: `${prefix}_${faker.string.alphanumeric(8)}`,
-    });
+      ...existing,
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      totalprice: faker.number.int({ min: 50, max: 500 }),
+    };
   }
 }
 
@@ -67,6 +55,6 @@ export class MobileDataGenerator {
   }
 }
 
-export { PetDataGenerator };
 export default WebDataGenerator;
-export { PetDataGenerator as PetFactory };
+export { BookingDataGenerator };
+export { BookingDataGenerator as BookingFactory };
