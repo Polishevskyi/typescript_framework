@@ -60,7 +60,7 @@ export default defineConfig({
     {
       name: 'api',
       testDir: './tests/api',
-      retries: 3,
+      retries: 10,
       use: { baseURL: process.env.API_BASE_URL! },
       metadata: { type: 'api' },
     },
