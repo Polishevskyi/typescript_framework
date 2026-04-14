@@ -4,16 +4,11 @@ import { CapabilitiesFactory } from './main/mobile/driver/capabilitiesFactory.js
 
 loadEnv();
 
+const IS_CI = !!process.env.CI;
 const isCloud = process.env.MOBILE_IS_CLOUD === 'true';
 const serverUrl = new URL(isCloud ? process.env.BROWSERSTACK_HUB_URL! : process.env.APPIUM_LOCAL_URL!);
-let serverPort: number;
-if (serverUrl.port !== '') {
-  serverPort = Number(serverUrl.port);
-} else if (serverUrl.protocol === 'https:') {
-  serverPort = 443;
-} else {
-  serverPort = 80;
-}
+const defaultPort = serverUrl.protocol === 'https:' ? 443 : 80;
+const serverPort = serverUrl.port ? Number(serverUrl.port) : defaultPort;
 
 export const config: Options.Testrunner = {
   user: isCloud ? process.env.BROWSERSTACK_USERNAME : undefined,
@@ -24,6 +19,10 @@ export const config: Options.Testrunner = {
   path: serverUrl.pathname,
   services: isCloud ? ['browserstack'] : [],
   specs: ['./tests/mobile/**/*.ts'],
+  maxInstances: isCloud ? 4 : 1,
+  capabilities: CapabilitiesFactory.createCapabilities(),
+  framework: 'mocha',
+
   reporters: [
     [
       'spec',
@@ -41,13 +40,12 @@ export const config: Options.Testrunner = {
       },
     ],
   ],
-  maxInstances: isCloud ? 4 : 1,
-  capabilities: CapabilitiesFactory.createCapabilities(),
-  framework: 'mocha',
+
   mochaOpts: {
     timeout: 120_000,
-    retries: 3,
+    retries: IS_CI ? 3 : 0,
   },
+
   autoCompileOpts: {
     tsNodeOpts: {
       project: './tsconfig.json',

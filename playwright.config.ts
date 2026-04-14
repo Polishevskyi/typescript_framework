@@ -1,66 +1,68 @@
-import { defineConfig, devices, type PlaywrightTestConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 import { config } from 'dotenv';
 
 config();
 
 export const STORAGE_STATE = '.auth/storageState.json';
+const IS_CI = !!process.env.CI;
 
 const browsers = {
   chromium: devices['Desktop Chrome'],
   firefox: devices['Desktop Firefox'],
   webkit: devices['Desktop Safari'],
-};
+} as const;
 
 const viewports = {
   desktop: { width: 1920, height: 1080 },
   mobile: { width: 375, height: 667 },
   tablet: { width: 768, height: 1024 },
-};
-
-const projects: PlaywrightTestConfig['projects'] = [
-  {
-    name: 'web-setup',
-    testMatch: /globalSetup\.ts/,
-    use: { baseURL: process.env.WEB_BASE_URL! },
-  },
-  ...Object.entries(browsers).flatMap(([browserName, device]) =>
-    Object.entries(viewports).map(([envName, viewport]) => ({
-      name: `${browserName}-${envName}`,
-      testDir: './tests/web',
-      dependencies: ['web-setup'],
-      use: {
-        ...device,
-        baseURL: process.env.WEB_BASE_URL!,
-        viewport,
-        screenshot: 'only-on-failure' as const,
-        storageState: STORAGE_STATE,
-      },
-      metadata: { browser: browserName, env: envName, type: 'e2e' },
-    }))
-  ),
-  {
-    name: 'api',
-    testDir: './tests/api',
-    use: {
-      baseURL: process.env.API_BASE_URL!,
-    },
-    metadata: { type: 'api' },
-  },
-];
+} as const;
 
 export default defineConfig({
   fullyParallel: true,
-  retries: 3,
-  workers: 5,
+  retries: IS_CI ? 3 : 0,
+  workers: IS_CI ? 5 : undefined,
   testMatch: /.*\.(test|spec)\.(ts|js|tsx|jsx)/,
+
   reporter: [['list'], ['allure-playwright', { outputFolder: 'allure-results', detail: true, suiteTitle: true }]],
+
   use: {
-    headless: process.env.WEB_HEADLESS === 'true',
+    headless: process.env.WEB_HEADLESS !== 'false',
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     navigationTimeout: 10_000,
     actionTimeout: 10_000,
   },
-  projects,
+
+  projects: [
+    {
+      name: 'web-setup',
+      testMatch: /globalSetup\.ts/,
+      use: { baseURL: process.env.WEB_BASE_URL! },
+    },
+
+    ...Object.entries(browsers).flatMap(([browserName, device]) =>
+      Object.entries(viewports).map(([viewportName, viewport]) => ({
+        name: `${browserName}-${viewportName}`,
+        testDir: './tests/web',
+        dependencies: ['web-setup'],
+        use: {
+          ...device,
+          baseURL: process.env.WEB_BASE_URL!,
+          viewport,
+          storageState: STORAGE_STATE,
+        },
+        metadata: { browser: browserName, viewport: viewportName, type: 'e2e' },
+      }))
+    ),
+
+    {
+      name: 'api',
+      testDir: './tests/api',
+      retries: 3,
+      use: { baseURL: process.env.API_BASE_URL! },
+      metadata: { type: 'api' },
+    },
+  ],
 });

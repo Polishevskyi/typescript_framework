@@ -3,8 +3,7 @@ import { type Locator, type Page } from '@playwright/test';
 class BasePage {
   protected readonly page: Page;
   protected readonly url: string = '/';
-
-  readonly pageTitle: Locator;
+  public readonly pageTitle: Locator;
 
   constructor(page: Page) {
     this.page = page;

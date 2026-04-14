@@ -2,8 +2,8 @@ import { type Locator } from '@playwright/test';
 import BasePage from './BasePage.js';
 
 class CheckoutPage extends BasePage {
-  readonly completeHeader: Locator = this.page.locator('.complete-header');
-  readonly completeText: Locator = this.page.locator('.complete-text');
+  public readonly completeHeader: Locator = this.page.locator('.complete-header');
+  public readonly completeText: Locator = this.page.locator('.complete-text');
   private readonly firstNameInput: Locator = this.page.locator('#first-name');
   private readonly lastNameInput: Locator = this.page.locator('#last-name');
   private readonly postalCodeInput: Locator = this.page.locator('#postal-code');

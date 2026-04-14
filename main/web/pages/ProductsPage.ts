@@ -3,7 +3,7 @@ import BasePage from './BasePage.js';
 
 class ProductsPage extends BasePage {
   protected readonly url: string = '/inventory.html';
-  readonly shoppingCartBadge: Locator = this.page.locator('.shopping_cart_badge');
+  public readonly shoppingCartBadge: Locator = this.page.locator('.shopping_cart_badge');
   private readonly shoppingCartLink: Locator = this.page.locator('.shopping_cart_link');
   private readonly burgerMenu: Locator = this.page.locator('#react-burger-menu-btn');
   private readonly logoutLink: Locator = this.page.locator('#logout_sidebar_link');

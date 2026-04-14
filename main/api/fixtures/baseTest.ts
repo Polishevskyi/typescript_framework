@@ -1,15 +1,15 @@
 import * as base from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { PetSteps } from '../steps/petSteps.js';
+import { PetService } from '../services/petService.js';
 import { PetFactory } from '../../utils/dataGenerator.js';
 import { PetResponseSchema } from '../schemas/petSchema.js';
 import { wrapInAllureStep } from '../../utils/allureProxy.js';
 
 const test = base.test.extend<{
-  petSteps: PetSteps;
+  petService: PetService;
 }>({
-  petSteps: async ({ request }, use) => {
-    await use(wrapInAllureStep(new PetSteps(request)));
+  petService: async ({ request }, use) => {
+    await use(wrapInAllureStep(new PetService(request)));
   },
 });
 
