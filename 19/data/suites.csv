@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","149","Verify that booking can be created successfully with valid data","api","Tue Apr 14 17:31:39 UTC 2026","passed","Tue Apr 14 17:31:39 UTC 2026","Create Booking","tests/api/createBooking.test.ts","",""
+"","152","Verify that booking can be retrieved successfully by ID","api","Tue Apr 14 17:31:39 UTC 2026","passed","Tue Apr 14 17:31:39 UTC 2026","Get Booking","tests/api/getBooking.test.ts","",""
+"","196","Verify that booking can be updated successfully with new data","api","Tue Apr 14 17:31:39 UTC 2026","passed","Tue Apr 14 17:31:39 UTC 2026","Update Booking","tests/api/updateBooking.test.ts","",""
+"","198","Verify that booking can be deleted successfully by ID","api","Tue Apr 14 17:31:39 UTC 2026","passed","Tue Apr 14 17:31:39 UTC 2026","Delete Booking","tests/api/deleteBooking.test.ts","",""
