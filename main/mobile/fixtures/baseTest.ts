@@ -2,13 +2,11 @@ import { expect } from '@wdio/globals';
 import { MobileConstants } from '../../utils/constants.js';
 import { MobileDataGenerator } from '../../utils/dataGenerator.js';
 import { LoginScreen, LoginErrorTypes, type LoginErrorType } from '../screens/LoginScreen.js';
-import { MenuScreen } from '../screens/MenuScreen.js';
 import { ProductsScreen } from '../screens/ProductsScreen.js';
 import { CartScreen } from '../screens/CartScreen.js';
 import { wrapInAllureStepWebdriverIO } from '../../utils/allureProxy.js';
 
 const loginScreen = wrapInAllureStepWebdriverIO(new LoginScreen());
-const menuScreen = wrapInAllureStepWebdriverIO(new MenuScreen());
 const productsScreen = wrapInAllureStepWebdriverIO(new ProductsScreen());
 const cartScreen = wrapInAllureStepWebdriverIO(new CartScreen());
 
@@ -23,7 +21,6 @@ export {
   validCredentials,
   MobileDataGenerator,
   loginScreen,
-  menuScreen,
   productsScreen,
   cartScreen,
   LoginErrorType,
