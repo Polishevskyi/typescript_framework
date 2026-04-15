@@ -1,6 +1,7 @@
 import { APIRequestContext, expect } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
 import { BookingFactory } from '../../utils/dataGenerator.js';
+import { ApiConstants } from '../../utils/constants.js';
 import type { BookingRequest, BookingCreateResponse } from '../schemas/bookingSchema.js';
 import { BookingSchema, BookingCreateResponseSchema } from '../schemas/bookingSchema.js';
 
@@ -18,10 +19,7 @@ export interface BookingResult {
 
 export class BookingService {
   private readonly baseURL = process.env.API_BASE_URL ?? '';
-  private readonly headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  };
+  private readonly headers = ApiConstants.HEADERS.JSON;
   constructor(private readonly request: APIRequestContext) {}
 
   async create(bookingData?: BookingRequest): Promise<BookingCreateResult> {

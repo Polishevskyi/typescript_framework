@@ -1,3 +1,13 @@
+// API constants
+const ApiConstants = {
+  HEADERS: {
+    JSON: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  },
+} as const;
+
 // Web constants
 const WebConstants = {
   PAGE_TITLES: {
@@ -54,4 +64,4 @@ const MobileConstants = {
   },
 } as const;
 
-export { WebConstants, MobileConstants };
+export { WebConstants, MobileConstants, ApiConstants };

@@ -1,12 +1,13 @@
 import { request, test as setup } from '@playwright/test';
 import { mkdir, writeFile } from 'fs/promises';
 import { API_STORAGE_STATE } from '../../../playwright.config.js';
+import { ApiConstants } from '../../utils/constants.js';
 
 setup('api authenticate', async () => {
   await mkdir('.auth', { recursive: true });
   const req = await request.newContext({ baseURL: process.env.API_BASE_URL });
   const response = await req.post('/auth', {
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    headers: ApiConstants.HEADERS.JSON,
     data: {
       username: process.env.API_CREDENTIALS_USERNAME,
       password: process.env.API_CREDENTIALS_PASSWORD,
