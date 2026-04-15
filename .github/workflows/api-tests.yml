@@ -68,6 +68,8 @@ jobs:
       - name: Run API tests
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          API_CREDENTIALS_USERNAME: ${{ secrets.API_CREDENTIALS_USERNAME }}
+          API_CREDENTIALS_PASSWORD: ${{ secrets.API_CREDENTIALS_PASSWORD }}
         run: npm run test:api
 
       - name: Upload Allure Results

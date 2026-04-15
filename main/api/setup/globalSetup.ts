@@ -1,5 +1,5 @@
-import { test as setup, request } from '@playwright/test';
-import { writeFile, mkdir } from 'fs/promises';
+import { request, test as setup } from '@playwright/test';
+import { mkdir, writeFile } from 'fs/promises';
 import { API_STORAGE_STATE } from '../../../playwright.config.js';
 
 setup('api authenticate', async () => {
@@ -12,7 +12,9 @@ setup('api authenticate', async () => {
       password: process.env.API_CREDENTIALS_PASSWORD,
     },
   });
-  const { token } = await response.json();
+  const body = await response.json();
+  if (!body.token) throw new Error(`Authentication failed: ${JSON.stringify(body)}`);
+  const { token } = body;
 
   const url = new URL(process.env.API_BASE_URL!);
   await writeFile(
