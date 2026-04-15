@@ -22,20 +22,7 @@ export class BookingService {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
-  private token: string | null = null;
-
   constructor(private readonly request: APIRequestContext) {}
-
-  private async getToken(): Promise<string> {
-    if (this.token) return this.token;
-    const response = await this.request.post(`${this.baseURL}/auth`, {
-      headers: this.headers,
-      data: { username: 'admin', password: 'password123' },
-    });
-    const { token } = await response.json();
-    this.token = token;
-    return token;
-  }
 
   async create(bookingData?: BookingRequest): Promise<BookingCreateResult> {
     const requestData = bookingData ?? BookingFactory.generateBookingRequest();
@@ -59,9 +46,8 @@ export class BookingService {
   }
 
   async update(bookingId: number, bookingData: BookingRequest): Promise<BookingResult> {
-    const token = await this.getToken();
     const response = await this.request.put(`${this.baseURL}/booking/${bookingId}`, {
-      headers: { ...this.headers, Cookie: `token=${token}` },
+      headers: this.headers,
       data: bookingData,
     });
     const status = response.status();
@@ -71,9 +57,8 @@ export class BookingService {
   }
 
   async delete(bookingId: number): Promise<BookingResult> {
-    const token = await this.getToken();
     const response = await this.request.delete(`${this.baseURL}/booking/${bookingId}`, {
-      headers: { ...this.headers, Cookie: `token=${token}` },
+      headers: this.headers,
     });
     const status = response.status();
     expect(status).toBe(StatusCodes.CREATED);

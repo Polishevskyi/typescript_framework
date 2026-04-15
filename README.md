@@ -54,6 +54,8 @@ typescript_framework/
 │   │   │   └── bookingSchema.ts         # Booking request/response schemas
 │   │   ├── 📁 services/                 # Service layer
 │   │   │   └── bookingService.ts        # Booking API service
+│   │   ├── 📁 setup/                    # Global setup
+│   │   │   └── globalSetup.ts           # API authentication & storage state
 │   │   └── 📁 fixtures/                 # Test fixtures
 │   │       └── baseTest.ts              # Base API test setup
 │   ├── 📁 web/                          # Web Testing

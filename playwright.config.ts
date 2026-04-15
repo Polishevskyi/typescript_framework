@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 config();
 
 export const STORAGE_STATE = '.auth/storageState.json';
+export const API_STORAGE_STATE = '.auth/apiStorageState.json';
 const IS_CI = !!process.env.CI;
 
 const browsers = {
@@ -38,8 +39,16 @@ export default defineConfig({
   projects: [
     {
       name: 'web-setup',
+      testDir: './main/web/setup',
       testMatch: /globalSetup\.ts/,
       use: { baseURL: process.env.WEB_BASE_URL! },
+    },
+
+    {
+      name: 'api-setup',
+      testDir: './main/api/setup',
+      testMatch: /globalSetup\.ts/,
+      use: { baseURL: process.env.API_BASE_URL! },
     },
 
     ...Object.entries(browsers).flatMap(([browserName, device]) =>
@@ -61,7 +70,8 @@ export default defineConfig({
       name: 'api',
       testDir: './tests/api',
       retries: 3,
-      use: { baseURL: process.env.API_BASE_URL! },
+      dependencies: ['api-setup'],
+      use: { baseURL: process.env.API_BASE_URL!, storageState: API_STORAGE_STATE },
       metadata: { type: 'api' },
     },
   ],
