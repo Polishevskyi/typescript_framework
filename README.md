@@ -587,6 +587,16 @@ npx wdio run wdio.mobile.conf.ts --spec tests/mobile/login.test.ts
 
 ---
 
+## 🧪 Mock Server Testing
+
+`errorsHandlingBooking.test.ts` uses a mock server (`baseMockTest.ts` fixture) to verify HTTP error handling without real API calls. Covers: `400`, `401`, `403`, `404`, `422`, `429`, `500`, `502`, `503`, `504`.
+
+```bash
+npx playwright test tests/api/errorsHandlingBooking.test.ts
+```
+
+---
+
 ## 🔄 Parallel Execution
 
 ### Web Tests (Playwright)
