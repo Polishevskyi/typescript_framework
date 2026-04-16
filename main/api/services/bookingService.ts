@@ -2,8 +2,8 @@ import { APIRequestContext, expect } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
 import { BookingFactory } from '../../utils/dataGenerator.js';
 import { ApiConstants } from '../../utils/constants.js';
-import type { BookingRequest, BookingCreateResponse } from '../schemas/bookingSchema.js';
-import { BookingSchema, BookingCreateResponseSchema } from '../schemas/bookingSchema.js';
+import type { BookingCreateResponse, BookingRequest } from '../schemas/bookingSchema.js';
+import { BookingCreateResponseSchema, BookingSchema } from '../schemas/bookingSchema.js';
 
 export interface BookingCreateResult {
   requestData: BookingRequest;
@@ -24,7 +24,7 @@ export class BookingService {
 
   async create(bookingData?: BookingRequest): Promise<BookingCreateResult> {
     const requestData = bookingData ?? BookingFactory.generateBookingRequest();
-    const response = await this.request.post(`${this.baseURL}/booking`, {
+    const response = await this.request.post(`${this.baseURL}${ApiConstants.ENDPOINTS.BOOKING}`, {
       headers: this.headers,
       data: requestData,
     });
@@ -35,7 +35,7 @@ export class BookingService {
   }
 
   async get(bookingId: number): Promise<BookingResult> {
-    const response = await this.request.get(`${this.baseURL}/booking/${bookingId}`, {
+    const response = await this.request.get(`${this.baseURL}${ApiConstants.ENDPOINTS.BOOKING_BY_ID(bookingId)}`, {
       headers: this.headers,
     });
     const status = response.status();
@@ -44,7 +44,7 @@ export class BookingService {
   }
 
   async update(bookingId: number, bookingData: BookingRequest): Promise<BookingResult> {
-    const response = await this.request.put(`${this.baseURL}/booking/${bookingId}`, {
+    const response = await this.request.put(`${this.baseURL}${ApiConstants.ENDPOINTS.BOOKING_BY_ID(bookingId)}`, {
       headers: this.headers,
       data: bookingData,
     });
@@ -55,7 +55,7 @@ export class BookingService {
   }
 
   async delete(bookingId: number): Promise<BookingResult> {
-    const response = await this.request.delete(`${this.baseURL}/booking/${bookingId}`, {
+    const response = await this.request.delete(`${this.baseURL}${ApiConstants.ENDPOINTS.BOOKING_BY_ID(bookingId)}`, {
       headers: this.headers,
     });
     const status = response.status();

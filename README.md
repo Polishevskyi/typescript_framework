@@ -57,7 +57,8 @@ typescript_framework/
 │   │   ├── 📁 setup/                    # Global setup
 │   │   │   └── globalSetup.ts           # API authentication & storage state
 │   │   └── 📁 fixtures/                 # Test fixtures
-│   │       └── baseTest.ts              # Base API test setup
+│   │       ├── baseTest.ts              # Base API test setup
+│   │       └── baseMockTest.ts          # Base mock server fixture
 │   ├── 📁 web/                          # Web Testing
 │   │   ├── 📁 pages/                    # Page Object Model
 │   │   │   ├── BasePage.ts              # Base page class
@@ -87,7 +88,8 @@ typescript_framework/
 │   │   ├── createBooking.test.ts        # Create booking tests
 │   │   ├── getBooking.test.ts           # Get booking tests
 │   │   ├── updateBooking.test.ts        # Update booking tests
-│   │   └── deleteBooking.test.ts        # Delete booking tests
+│   │   ├── deleteBooking.test.ts        # Delete booking tests
+│   │   └── errorsHandlingBooking.test.ts # Mock server error handling tests
 │   ├── 📁 web/                          # Web Tests
 │   │   ├── login.test.ts                # Login tests
 │   │   ├── shopping.test.ts             # Shopping tests

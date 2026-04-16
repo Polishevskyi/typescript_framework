@@ -6,6 +6,10 @@ const ApiConstants = {
       Accept: 'application/json',
     },
   },
+  ENDPOINTS: {
+    BOOKING: '/booking',
+    BOOKING_BY_ID: (id: number) => `/booking/${id}`,
+  },
 } as const;
 
 // Web constants
